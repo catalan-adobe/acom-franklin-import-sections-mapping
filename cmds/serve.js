@@ -80,11 +80,10 @@ async function sectionsDataHandler(req, res) {
       if (blockFile) {
         section.block.screenshot = `http://localhost:3000/blocks/${blockFile.split('blocks/')[1]}`;
         // get block type from path
-        const found = blockFile.match(/blocks\/(\w+)\//);
-        if (found) {
-          section.block.type = found[1];
-          sections.push(section);
-        }
+        const typeTmp = blockFile.split('blocks/')[1];
+        const type = typeTmp.split('/')[0];
+        section.block.type = type;
+        sections.push(section);
       }
     }
 
