@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.0.1...v1.0.2) (2023-03-28)
+
+
+### Bug Fixes
+
+* block type extraction from screenshot file path ([d8ca156](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/d8ca1562f7abcecec92b8d12ebf97432d11ef83a))
+
 ## [1.0.1](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.0.0...v1.0.1) (2023-03-25)
 
 
