@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.0.2...v1.1.0) (2023-03-29)
+
+
+### Features
+
+* for debugging and for very specific cases, allow no headless mode for prepare command ([fc9b5ca](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/fc9b5ca72e51700f1779ec204b7b96df2a39f17f))
+
 ## [1.0.2](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.0.1...v1.0.2) (2023-03-28)
 
 
