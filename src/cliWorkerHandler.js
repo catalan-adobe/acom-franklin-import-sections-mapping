@@ -90,7 +90,7 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
   * Init workers
   */
 
-  const numWorkers = argv.workers;
+  const numWorkers = !workerOptions.headless ? 1 : argv.workers;
 
   terminal.green(`Processing ${urls.length} url(s) with ${numWorkers} worker(s)...\n`);
 
