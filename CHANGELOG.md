@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.1.0...v1.1.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* resolve chrome startup content loading issues when not in headless ([a24421f](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/a24421f29b31438b0bf1c09922395e54b91b303e))
+
 # [1.1.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.0.2...v1.1.0) (2023-03-29)
 
 
