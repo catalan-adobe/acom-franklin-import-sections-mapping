@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.1.1...v1.2.0) (2023-04-03)
+
+
+### Features
+
+* improve sections data extraction and automatically mark invisible sections as to-remove ([a01bf4c](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/a01bf4c5000dc05f1fcbd554c8a59639e2c94271))
+
 ## [1.1.1](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.1.0...v1.1.1) (2023-03-31)
 
 
