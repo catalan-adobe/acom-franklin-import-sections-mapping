@@ -5,6 +5,16 @@ const yargs = require('yargs');
 const { terminal } = require('terminal-kit');
 const { Worker } = require('worker_threads');
 
+const noHeadlessWarningHeader = `
+! 🚨 NO HEADLESS MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                                                                              !
+!   Multiple Chromium browser windows will open and be automated by the CLI:   !
+!   * DO NOT INTERACT WITH THEM!                                               !
+!                                                                              !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+`;
+
 /*
  * Worker handlers
  */
@@ -150,16 +160,6 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
     }, 10);
   });
 }
-
-const noHeadlessWarningHeader = `
-! 🚨 NO HEADLESS MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!                                                                              !
-!   Multiple Chromium browser windows will open and be automated by the CLI:   !
-!   * DO NOT INTERACT WITH THEM!                                               !
-!                                                                              !
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-`;
 
 /*
  * Exports
