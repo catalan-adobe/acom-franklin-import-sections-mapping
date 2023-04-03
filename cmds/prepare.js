@@ -13,7 +13,7 @@ const { cliWorkerHandler } = require('../src/cliWorkerHandler');
 const MILO_BLOCK_SAMPLE_PAGE_ROOT = 'https://main--milo--adobecom.hlx.page/docs/library/blocks/';
 const MILO_LIBRARY_JSON_URL = 'https://milo.adobe.com/docs/library/library.json';
 const MILO_BLOCKS_DEFAULT = ['accordion', 'aside', 'carousel', 'fragment', 'iconblock', 'marquee', 'media', 'text', 'z-pattern'];
-const CUSTOM_BLOCKS_DEFAULT = ['unknown'];
+const CUSTOM_BLOCKS_DEFAULT = ['unknown', 'to-remove'];
 const MILO_BLOCK_SAMPLE_PAGE_HTML = `<html>
   <body>
   <h3><a href="https://milo.adobe.com" target="_blank">Milo</a> Blocks Sample Pages</h3>

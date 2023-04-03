@@ -65,6 +65,9 @@ async function readLines() {
  */
 
 async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
+  const { Time } = await import('franklin-bulk-shared');
+
+  // init urls array to store the list of URLs to process
   let urls = [];
 
   // set worker script
@@ -90,7 +93,11 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
   * Init workers
   */
 
-  const numWorkers = !workerOptions.headless ? 1 : argv.workers;
+  const numWorkers = !workerOptions.headless ? Math.min(argv.workers, 4) : argv.workers;
+
+  if (!workerOptions.headless) {
+    terminal.bold.red(noHeadlessWarningHeader);
+  }
 
   terminal.green(`Processing ${urls.length} url(s) with ${numWorkers} worker(s)...\n`);
 
@@ -102,10 +109,8 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
     worker.on('exit', workerExitHandler.bind(null, workers));
     // Listen for messages from the worker thread
     worker.on('message', workerMsgHandler.bind(null, worker, urls, results, workerOptions, argv));
-  }
 
-  // Send a URL to each worker
-  for (let i = 0; i < numWorkers; i += 1) {
+    // Send a URL to each worker
     const url = urls.shift();
     if (url) {
       results.push({ url, status: null });
@@ -120,6 +125,10 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
       // If there are no more URLs, terminate the worker
       workers[i].postMessage({ type: 'exit' });
     }
+
+    // pace worker ramp-up
+    /* eslint-disable-next-line no-await-in-loop */
+    await Time.sleep(2500);
   }
 
   return new Promise((resolve) => {
@@ -141,6 +150,16 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
     }, 10);
   });
 }
+
+const noHeadlessWarningHeader = `
+! 🚨 NO HEADLESS MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                                                                              !
+!   Multiple Chromium browser windows will open and be automated by the CLI:   !
+!   * DO NOT INTERACT WITH THEM!                                               !
+!                                                                              !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+`;
 
 /*
  * Exports

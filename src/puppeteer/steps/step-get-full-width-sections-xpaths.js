@@ -31,14 +31,16 @@ async function generateAndSavePageScreenshotWithSectionsBoxes(sections, page, fi
   const boxes = [];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
-    const svgBuffer = `<svg width="${section.width}" height="${section.height}">
-        <rect width="${section.width - 8}" height="${section.height - 8}" x="4" y="4" fill="none" stroke="#00F" stroke-width="2"/>
-      </svg>`;
-    boxes.push({
-      input: Buffer.from(svgBuffer),
-      left: section.x,
-      top: section.y,
-    });
+    if (!section.block) {
+      const svgBuffer = `<svg width="${section.width}" height="${section.height}">
+          <rect width="${section.width - 8}" height="${section.height - 8}" x="4" y="4" fill="none" stroke="#00F" stroke-width="2"/>
+        </svg>`;
+      boxes.push({
+        input: Buffer.from(svgBuffer),
+        left: section.x,
+        top: section.y,
+      });
+    }
   }
 
   return sharp(screenshot)
@@ -81,6 +83,32 @@ window.getXPath = function(elm, addClass = false) {
 window.parentHasCSSSelector = function(elm, selector) {
   return elm.closest(selector) !== null;
 };
+window.getNSiblingsElements = function(n) {
+  let selectedXpathPattern = '';
+  const xpathGrouping = [];
+
+  document.body.querySelectorAll(':scope > div div').forEach(d => {
+    const xpath = window.getXPath(d);
+    const xp = xpath.substring(0, xpath.lastIndexOf('['));
+    if (!xpathGrouping[xp]) {
+      xpathGrouping[xp] = [d];
+    } else {
+      xpathGrouping[xp].push(d);
+    }
+  });
+
+  // find the xpath pattern that has n elements
+  const reversedXPaths = Object.keys(xpathGrouping);//.reverse();
+  for (var i = 0; i < reversedXPaths.length; i++) {
+    const key = reversedXPaths[i];
+    if (xpathGrouping[key].length >= n) {
+      selectedXpathPattern = key;
+      break;
+    }
+  }
+
+  return selectedXpathPattern;
+}
 `;
 
 /* eslint-disable-next-line import/prefer-default-export */
@@ -96,8 +124,8 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
       await action(params);
 
       /*
-         * init
-         */
+       * init
+       */
 
       const cssExclusions = exclusions.split(',').map((x) => x.trim());
 
@@ -108,6 +136,15 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
         fs.mkdirSync(path, { recursive: true });
       }
 
+      // inject javascript function to generate xpath
+      await params.page.addScriptTag({
+        content: pptrPageScript,
+      });
+
+      // get all divs
+      const xpPattern = await params.page.evaluate(() => window.getNSiblingsElements(3));
+      const divs = await params.page.$x(xpPattern);
+
       // Evaluate JavaScript
       const pageHeight = await params.page.evaluate(() => window.document.body.scrollHeight);
 
@@ -117,29 +154,16 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
         deviceScaleFactor: 1,
       });
 
-      // inject javascript function to generate xpath
-      await params.page.addScriptTag({
-        content: pptrPageScript,
-      });
-
       /*
-         * Look for "sections"
-         */
+       * Look for "sections"
+       */
+
       const sections = [];
       const urlHash = crypto.createHash('sha1').update(params.url).digest('hex');
-
-      // get all divs
-      const divs = await params.page.$$('div');
 
       // loop over all divs to find full-width sections
       for (let i = 0; i < divs.length; i += 1) {
         const div = divs[i];
-
-        /* eslint-disable-next-line no-await-in-loop */
-        const xpathWithClasses = await params.page.evaluate(
-          (node) => window.getXPath(node, true),
-          div,
-        );
 
         /* eslint-disable-next-line no-await-in-loop */
         const checkCSSExclusions = await Promise.all(cssExclusions.map(async (e) => {
@@ -152,85 +176,72 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
           const res = b === true;
           return res;
         }));
+
         const isCSSExcluded = checkCSSExclusions.some((x) => x === true);
 
-        /* eslint-disable-next-line no-await-in-loop */
-        const boundingBox = await div.boundingBox();
+        if (!isCSSExcluded) {
+          /* eslint-disable-next-line no-await-in-loop */
+          const boundingBox = await div.boundingBox();
 
-        // is the div a full-width section?
-        if (!isCSSExcluded
-          && boundingBox
-          && boundingBox.x === 0
-          && boundingBox.y >= 0
-          && boundingBox.width > 1180
-          && boundingBox.height > 50
-          && boundingBox.height < 0.8 * pageHeight
-        ) {
           const section = {
-            x: Math.floor(boundingBox.x),
-            y: Math.floor(boundingBox.y),
-            width: Math.floor(boundingBox.width),
-            height: Math.floor(boundingBox.height),
             url: params.url,
             urlHash,
             div,
-            xpathWithClasses,
+            // xpathWithClasses,
             xpath: '',
             xpathHash: '',
           };
 
-          /* eslint-disable-next-line no-await-in-loop */
-          const xpath = await params.page.evaluate(
-            (node) => window.getXPath(node, false),
-            div,
-          );
-          section.xpath = xpath;
+          // is the div a full-width section?
+          if (boundingBox) {
+            section.x = Math.floor(boundingBox.x);
+            section.y = Math.floor(boundingBox.y);
+            section.width = Math.floor(boundingBox.width);
+            section.height = Math.floor(boundingBox.height);
 
-          const xpathHash = crypto.createHash('sha1').update(xpath).digest('hex');
-          section.xpathHash = xpathHash;
+            /* eslint-disable-next-line no-await-in-loop */
+            const xpath = await params.page.evaluate(
+              (node) => window.getXPath(node, false),
+              div,
+            );
+            section.xpath = xpath;
 
-          if (sections.length === 0) {
-            sections.push(section);
-          }
+            const xpathHash = crypto.createHash('sha1').update(xpath).digest('hex');
+            section.xpathHash = xpathHash;
 
-          const already = sections.some((s) => s.x === section.x
-                    && s.y === section.y
-                    && s.width === section.width
-                    && s.height === section.height);
-          if (!already) {
-            sections.push(section);
+            if (boundingBox.x === 0
+              && boundingBox.y >= 0
+              && boundingBox.width > 1180
+              && boundingBox.height > 50
+              && boundingBox.height < 0.8 * pageHeight
+            ) {
+              sections.push(section);
+            } else {
+              section.block = {
+                type: 'to-remove',
+                comment: '[acom-section-mapping prepare] invisible section, force removing it in importer script to avoid ghost content to be added to the docx',
+              };
+              sections.push(section);
+            }
           }
         }
       }
 
-      let selectedXpathPattern = '';
-      const xpathGrouping = [];
-      sections.forEach((s) => {
-        const xp = s.xpath.substring(0, s.xpath.lastIndexOf('['));
-        if (!xpathGrouping[xp]) {
-          xpathGrouping[xp] = 1;
-        } else {
-          xpathGrouping[xp] += 1;
-          if (xpathGrouping[xp] > 3) {
-            selectedXpathPattern = xp;
-          }
-        }
-      });
-
-      const result = sections.filter((element) => element.xpath.substring(0, element.xpath.lastIndexOf('[')) === selectedXpathPattern);
-
+      const result = sections;
       for (let i = 0; i < result.length; i += 1) {
         const section = result[i];
-        /* eslint-disable-next-line no-await-in-loop */
-        await section.div.screenshot({
-          path: pUtils.join(path, `${urlHash}.section-${i}.${section.xpathHash}.png`),
-        });
-        /* eslint-disable-next-line no-await-in-loop */
-        await franklin.Time.sleep(100);
+        if (!section.block) {
+          /* eslint-disable-next-line no-await-in-loop */
+          await section.div.screenshot({
+            path: pUtils.join(path, `${urlHash}.section-${i}.${section.xpathHash}.png`),
+          });
+          /* eslint-disable-next-line no-await-in-loop */
+          await franklin.Time.sleep(100);
+        }
       }
 
       // save sections data json file
-      await writeFileSync(pUtils.join(path, `${urlHash}-sections.json`), JSON.stringify(sections, null, 2));
+      await writeFileSync(pUtils.join(path, `${urlHash}-sections.json`), JSON.stringify(result, null, 2));
 
       // save a page screenshot with all discovered sections boxes
       await generateAndSavePageScreenshotWithSectionsBoxes(result, params.page, pUtils.join(path, `${urlHash}.${filename}`));

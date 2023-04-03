@@ -15,7 +15,9 @@ parentPort.on('message', async (msg) => {
     const franklin = await import('franklin-bulk-shared');
 
     try {
-      const [browser, page] = await franklin.Puppeteer.initBrowser({ headless: msg.options.headless });
+      const [browser, page] = await franklin.Puppeteer.initBrowser({
+        headless: msg.options.headless,
+      });
 
       await franklin.Puppeteer.runStepsSequence(
         page,
@@ -27,7 +29,7 @@ parentPort.on('message', async (msg) => {
             await browserPage.keyboard.press('Escape');
           }),
           franklin.Puppeteer.Steps.smartScroll(),
-          franklin.Puppeteer.Steps.postLoadWait(2000),
+          franklin.Puppeteer.Steps.postLoadWait(500),
           getFullWidthSectionsXPaths({
             outputFolder: path.join(msg.options.outputFolder, 'data'),
             exclusions: msg.argv.cssExclusions,
