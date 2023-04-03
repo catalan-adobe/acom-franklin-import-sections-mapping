@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.2.0...v1.3.0) (2023-04-03)
+
+
+### Features
+
+* detect and report missing possible non detected sections when in headless ([7bf3f8f](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/7bf3f8fba8e70ac48ac246cc20da63a5ead64951))
+
 # [1.2.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.1.1...v1.2.0) (2023-04-03)
 
 
