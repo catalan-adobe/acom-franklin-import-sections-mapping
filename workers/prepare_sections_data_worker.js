@@ -1,6 +1,7 @@
 const path = require('path');
 const { parentPort } = require('worker_threads');
 const { getFullWidthSectionsXPaths } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths');
+const { getFailingHtmlResources } = require('../src/puppeteer/steps/step-get-failing-html-resources-403');
 
 /*
 * Worker thread
@@ -19,11 +20,12 @@ parentPort.on('message', async (msg) => {
         headless: msg.options.headless,
       });
 
-      await franklin.Puppeteer.runStepsSequence(
+      const result = await franklin.Puppeteer.runStepsSequence(
         page,
         msg.url,
         [
-          franklin.Puppeteer.Steps.postLoadWait(1000),
+          getFailingHtmlResources(),
+          franklin.Puppeteer.Steps.postLoadWait(500),
           franklin.Puppeteer.Steps.GDPRAutoConsent(),
           franklin.Puppeteer.Steps.execAsync(async (browserPage) => {
             await browserPage.keyboard.press('Escape');
@@ -42,11 +44,17 @@ parentPort.on('message', async (msg) => {
 
       await browser.close();
 
-      parentPort.postMessage({
+      const resultMsg = {
         url: msg.url,
         passed: true,
         result: 'Success',
-      });
+      };
+
+      if (result.result.warning) {
+        resultMsg.warning = result.result.warning;
+      }
+
+      parentPort.postMessage(resultMsg);
     } catch (error) {
       parentPort.postMessage({
         url: msg.url,

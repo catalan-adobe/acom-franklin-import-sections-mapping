@@ -147,7 +147,7 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
       while (results.length > 0 && results[0].status !== null) {
         const result = results.shift();
         if (result.status.passed) {
-          terminal(` ✅  ${result.url}\n`);
+          terminal(` ✅${result.status.warning ? ' 🟠' : ''}  ${result.url}${result.status.warning ? ` ^yWarning: ${result.status.warning}^:` : ''}\n`);
         } else {
           terminal(` ❌  ${result.url} - ^rError: ${result.status.result}^:\n`);
         }
