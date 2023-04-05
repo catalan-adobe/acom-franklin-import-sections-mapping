@@ -83,17 +83,19 @@ window.getXPath = function(elm, addClass = false) {
 window.parentHasCSSSelector = function(elm, selector) {
   return elm.closest(selector) !== null;
 };
-window.getNSiblingsElements = function(n) {
+window.getNSiblingsElements = function(n, cssExclusions = []) {
   let selectedXpathPattern = '';
   const xpathGrouping = [];
 
   document.body.querySelectorAll(':scope > div div').forEach(d => {
-    const xpath = window.getXPath(d);
-    const xp = xpath.substring(0, xpath.lastIndexOf('['));
-    if (!xpathGrouping[xp]) {
-      xpathGrouping[xp] = [d];
-    } else {
-      xpathGrouping[xp].push(d);
+    if(!cssExclusions.some(s => [...d.parentElement.querySelectorAll(s)].some(e => e === d))) {
+      const xpath = window.getXPath(d);
+      const xp = xpath.substring(0, xpath.lastIndexOf('['));
+      if (!xpathGrouping[xp]) {
+        xpathGrouping[xp] = [d];
+      } else {
+        xpathGrouping[xp].push(d);
+      }
     }
   });
 
@@ -142,7 +144,7 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
       });
 
       // get all divs
-      const xpPattern = await params.page.evaluate(() => window.getNSiblingsElements(3));
+      const xpPattern = await params.page.evaluate((excl) => window.getNSiblingsElements(3, excl), cssExclusions);
       const divs = await params.page.$x(xpPattern);
 
       // Evaluate JavaScript
