@@ -211,9 +211,8 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
             const xpathHash = crypto.createHash('sha1').update(xpath).digest('hex');
             section.xpathHash = xpathHash;
 
-            if (boundingBox.x === 0
-              && boundingBox.y >= 0
-              && boundingBox.width > 1180
+            if (
+              boundingBox.y >= 0
               && boundingBox.height > 50
               && boundingBox.height < 0.8 * pageHeight
             ) {
