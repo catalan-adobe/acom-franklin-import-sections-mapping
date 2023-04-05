@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.3.0...v1.4.0) (2023-04-05)
+
+
+### Bug Fixes
+
+* support css exclusions when looking for n siblings divs ([cbab349](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/cbab349256ffc75a925a7d2df2c0d711e9747327))
+
+
+### Features
+
+* with n sibling divs approach, remove strict full width limit when looking for sections ([4608ffd](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/4608ffdc35548052d3e34561b5b91526aaf8cd29))
+
 # [1.3.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.2.0...v1.3.0) (2023-04-03)
 
 
