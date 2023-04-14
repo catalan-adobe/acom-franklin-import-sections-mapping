@@ -144,7 +144,10 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
       });
 
       // get all divs
-      const xpPattern = await params.page.evaluate((excl) => window.getNSiblingsElements(3, excl), cssExclusions);
+      const xpPattern = await params.page.evaluate(
+        (excl) => window.getNSiblingsElements(3, excl),
+        cssExclusions,
+      );
       const divs = await params.page.$x(xpPattern);
 
       // Evaluate JavaScript
