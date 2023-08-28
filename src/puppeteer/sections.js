@@ -1,10 +1,6 @@
 const crypto = require('crypto');
-const assert = require('assert');
 
 async function analyseSection(section, params) {
-
-  const pageWidth = params.page.viewport().width;
-
   // get all sectionEls
   const sectionEls = await section.div.$$('*');
   // console.log(sectionEls);
@@ -18,8 +14,10 @@ async function analyseSection(section, params) {
       element: sectionEl,
     };
 
+    /* eslint-disable-next-line no-await-in-loop */
     const boundingBox = await sectionEl.boundingBox();
 
+    /* eslint-disable-next-line no-await-in-loop */
     const bbb = await sectionEl.evaluate(
       (el) => el.getBoundingClientRect(),
     );
@@ -51,11 +49,11 @@ async function analyseSection(section, params) {
       // // console.log(discoveredEl);
       // console.log('====================================================');
       // console.log('found: ')
-      // console.log(discoveredEls.find((el) => { 
+      // console.log(discoveredEls.find((el) => {
       //   try {
       //     console.log(el);
       //     console.log(discoveredEl);
-      //     assert.deepEqual(el, discoveredEl); 
+      //     assert.deepEqual(el, discoveredEl);
       //     return true;
       //   } catch(e) {
       //     console.log(e);
@@ -70,18 +68,15 @@ async function analyseSection(section, params) {
         // && boundingBox.height < 0.8 * pageHeight
         && boundingBox.width * boundingBox.height > 250 * 250 // 380 * 260 // ~ card size
         && boundingBox.width * boundingBox.height < 1000 * 1000 // arbitrary big number
-        && !discoveredEls.find((el) => { 
-          return (el.x === discoveredEl.x && el.y === discoveredEl.y && el.width === discoveredEl.width && el.height === discoveredEl.height);
-          })
+        && !discoveredEls.find((el) => (
+          el.x === discoveredEl.x
+          && el.y === discoveredEl.y
+          && el.width === discoveredEl.width
+          && el.height === discoveredEl.height
+        ))
       ) {
         discoveredEls.push(discoveredEl);
-      }/* else {
-        section.block = {
-          type: 'to-remove',
-          comment: '[acom-section-mapping prepare] invisible section, force removing it in importer script to avoid ghost content to be added to the docx',
-        };
-        sections.push(section);
-      }*/
+      }
     }
   }
 
@@ -96,7 +91,7 @@ async function analyseSection(section, params) {
     // }
 
     if (
-      rows.length === 0 
+      rows.length === 0
       || (
         currentEl.y !== el.y
         // && el.y >= currentEl.y

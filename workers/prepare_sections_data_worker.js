@@ -1,7 +1,6 @@
 const path = require('path');
 const { parentPort } = require('worker_threads');
 const { getFullWidthSectionsXPaths } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths-generic');
-const { getFullWidthSectionsXPathsForBacom } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths-bacom');
 
 const { getFailingHtmlResources } = require('../src/puppeteer/steps/step-get-failing-html-resources-403');
 

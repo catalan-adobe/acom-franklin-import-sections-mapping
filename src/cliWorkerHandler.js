@@ -29,8 +29,9 @@ async function workerMsgHandler(worker, urls, results, workerOptions, argv, resu
 
     /* eslint-disable-next-line no-param-reassign */
     const u = new URL(result.url);
+    /* eslint-disable-next-line no-param-reassign */
     result.path = FileUtils.sanitizePath(u.pathname);
-
+    /* eslint-disable-next-line no-param-reassign */
     results[idx].status = result;
   }
 
@@ -99,7 +100,7 @@ const getReport = async () => {
     headers,
   ].concat(dataReport.rows.map((row) => {
     const {
-      url, path, report,
+      url, repPath, report,
     } = row;
     const extra = [];
     if (report && dataReport.extraCols) {
@@ -121,7 +122,7 @@ const getReport = async () => {
         }
       });
     }
-    return [url, path].concat(extra);
+    return [url, repPath].concat(extra);
   })));
 
   return workbook.xlsx.writeBuffer();

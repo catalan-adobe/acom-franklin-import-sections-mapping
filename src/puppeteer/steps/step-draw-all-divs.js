@@ -27,14 +27,14 @@ async function generateAndSavePageScreenshotWithSectionsBoxes(sections, page, fi
   });
 
   await Time.sleep(1000);
-  
+
   const boxes = [];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
-  
+
     console.log(section);
 
-    const strokeColor = section.width > 1100 ? '#00ff00' : '#' + Math.floor(Math.random()*16777215).toString(16);
+    const strokeColor = section.width > 1100 ? '#00ff00' : `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
     if (!section.block && section.width > 0 && section.height > 0) {
       console.log(section.width, section.height, section.x, section.y);

@@ -9,7 +9,8 @@
         {
             "files": ["*.js"],
             "rules": {
-                "prefer-destructuring": "off"
+                "prefer-destructuring": "off",
+                "no-console": "off"
             }
           }
     ],

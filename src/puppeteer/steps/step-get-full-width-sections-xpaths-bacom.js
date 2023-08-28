@@ -194,7 +194,9 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
       console.log(divs.length);
 
       // Evaluate JavaScript
-      const pageHeight = await params.page.evaluate(() =>  window.document.body.offsetHeight || window.document.body.scrollHeight);
+      const pageHeight = await params.page.evaluate(
+        () => window.document.body.offsetHeight || window.document.body.scrollHeight,
+      );
 
       await params.page.setViewport({
         width: 1280,
@@ -267,21 +269,26 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
 
             console.log('bb', boundingBox);
             if (
-              boundingBox.y >= 0 &&
-              boundingBox.width > 0 &&
-              boundingBox.height > 0
+              boundingBox.y >= 0
+              && boundingBox.width > 0
+              && boundingBox.height > 0
               // && boundingBox.height > 50
               // && boundingBox.height < 0.8 * pageHeight
             ) {
               if (analyseSections) {
-                const discoveredBlocks = await analyseSection(section, params)
+                /* eslint-disable-next-line no-await-in-loop */
+                const discoveredBlocks = await analyseSection(section, params);
                 const verticalBoxes = sectionsUtils.getVerticalBoxes(discoveredBlocks);
-                const predictedContent = sectionsUtils.predictContent(section, discoveredBlocks, verticalBoxes, params);
+                // const predictedContent = sectionsUtils.predictContent(
+                //   section,
+                //   discoveredBlocks,
+                //   verticalBoxes,
+                //   params,
+                // );
                 section.analysis = {
                   discoveredBlocks,
                   verticalBoxes,
-                }
-
+                };
               }
               sections.push(section);
             } else {
@@ -303,6 +310,7 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
       for (let i = 0; i < result.length; i += 1) {
         const section = result[i];
 
+        /* eslint-disable-next-line no-await-in-loop */
         const b = await section.div.boundingBox();
         console.log(b);
         if (!section.block) {
@@ -329,7 +337,6 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
       });
 
       writeFileSync(pUtils.join(path, `${urlHash}.${filename}-screenshot.jpeg`), screenshot);
-      
     } catch (e) {
       params.logger.error('get full-width sections xpaths catch', e);
       params.result = {

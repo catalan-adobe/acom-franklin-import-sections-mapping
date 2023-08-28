@@ -49,7 +49,7 @@ async function generateAndSavePageScreenshotWithSectionsBoxes(sections, page, fi
     .toFile(filename);
 }
 
-function isInside(s1 ,s2) {
+function isInside(s1, s2) {
   // console.log(s1, s2);
 
   const s2Area = s2.width * s2.height;
@@ -58,14 +58,14 @@ function isInside(s1 ,s2) {
   console.log(s2Area, s2AreaInsideS1, s2AreaInsideS1 / s2Area);
   return (
     // s2AreaInsideS1 / s2Area < 0.8 &&
-    s2.x >= s1.x &&
-    s2.y >= s1.y - 40 &&
+    s2.x >= s1.x
+    && s2.y >= s1.y - 40
 
     // s2.x + s2.width <= s1.x + s1.width &&
     // s2.y + s2.height <= s1.y + s1.height
 
     // should not use dom strucutre to determine if a section is inside another...
-    s2.xpath.indexOf(s1.xpath) === 0
+    && s2.xpath.indexOf(s1.xpath) === 0
   );
 }
 
@@ -133,7 +133,9 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
       }
 
       // Evaluate JavaScript
-      const pageHeight = await params.page.evaluate(() => window.document.body.scrollHeight || window.document.body.offsetHeight);
+      const pageHeight = await params.page.evaluate(
+        () => window.document.body.scrollHeight || window.document.body.offsetHeight,
+      );
 
       await params.page.setViewport({
         width: DEFAULT_PAGE_WIDTH,
@@ -219,12 +221,11 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
             sections.push(section);
           }
 
-          const already = sections.some((s) => 
-                    (s.x === section.x &&
-                    s.y === section.y &&
-                    s.width === section.width &&
-                    s.height === section.height) ||
-                    isInside(s, section));
+          const already = sections.some((s) => (s.x === section.x
+                    && s.y === section.y
+                    && s.width === section.width
+                    && s.height === section.height)
+                    || isInside(s, section));
           if (!already) {
             sections.push(section);
           }
@@ -244,7 +245,10 @@ function getFullWidthSectionsXPaths({ outputFolder = `${process.cwd()}/xpaths`, 
       //     }
       //   }
       // });
-      // const result = sections.filter((element) => element.xpath.substring(0, element.xpath.lastIndexOf('[')) === selectedXpathPattern);
+      // const result = sections.filter(
+      //   (element) =>
+      //     element.xpath.substring(0, element.xpath.lastIndexOf('[')) === selectedXpathPattern
+      // );
 
       const result = sections;
 
