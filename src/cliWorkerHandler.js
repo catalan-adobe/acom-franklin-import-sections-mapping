@@ -4,6 +4,8 @@ const readline = require('readline');
 const yargs = require('yargs');
 const { terminal } = require('terminal-kit');
 const { Worker } = require('worker_threads');
+const ExcelJS = require('exceljs');
+// const { FileUtils } = require('@adobe/helix-importer');
 
 const noHeadlessWarningHeader = `
 ! 🚨 NO HEADLESS MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -19,11 +21,16 @@ const noHeadlessWarningHeader = `
  * Worker handlers
  */
 
-function workerMsgHandler(worker, urls, results, workerOptions, argv, result) {
+async function workerMsgHandler(worker, urls, results, workerOptions, argv, result) {
   // store the result
   const idx = results.findIndex((r) => r.url === result.url);
   if (idx > -1) {
+    const { FileUtils } = await import('@adobe/helix-importer');
+
     /* eslint-disable-next-line no-param-reassign */
+    const u = new URL(result.url);
+    result.path = FileUtils.sanitizePath(u.pathname);
+
     results[idx].status = result;
   }
 
@@ -69,6 +76,56 @@ async function readLines() {
 
   return lines;
 }
+
+// reporting feature!
+const dataReport = {
+  rows: [],
+  extraCols: ['hasFaasForm', 'hasNextUpPod', 'hasCardCollection'],
+};
+
+const getReport = async () => {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('report');
+
+  const headers = ['URL', 'path'].concat(dataReport.extraCols);
+
+  // create Excel auto Filters for the first row / header
+  worksheet.autoFilter = {
+    from: 'A1',
+    to: `${String.fromCharCode(65 + headers.length - 1)}1`, // 65 = 'A'...
+  };
+
+  worksheet.addRows([
+    headers,
+  ].concat(dataReport.rows.map((row) => {
+    const {
+      url, path, report,
+    } = row;
+    const extra = [];
+    if (report && dataReport.extraCols) {
+      dataReport.extraCols.forEach((col) => {
+        const e = report[col];
+        if (e) {
+          if (typeof e === 'string') {
+            if (e.startsWith('=')) {
+              extra.push({
+                formula: report[col].replace(/=/, '_xlfn.'),
+                value: '', // cannot compute a default value
+              });
+            } else {
+              extra.push(report[col]);
+            }
+          } else {
+            extra.push(JSON.stringify(report[col]));
+          }
+        }
+      });
+    }
+    return [url, path].concat(extra);
+  })));
+
+  return workbook.xlsx.writeBuffer();
+};
 
 /*
  * Main Handler for CLI commands with worker threads
@@ -143,9 +200,11 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
 
   return new Promise((resolve) => {
     // Handle ordered output
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       while (results.length > 0 && results[0].status !== null) {
         const result = results.shift();
+        // console.log(result.status);
+        dataReport.rows.push(result.status);
         if (result.status.passed) {
           terminal(` ✅${result.status.warning ? ' 🟠' : ''}  ${result.url}${result.status.warning ? ` ^yWarning: ${result.status.warning}^:` : ''}\n`);
         } else {
@@ -153,11 +212,15 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
         }
       }
 
+      // console.log(await getReport());
+
+      fs.writeFileSync('./report.xlsx', await getReport());
+
       if (workers.length === 0) {
         clearInterval(interval);
         resolve();
       }
-    }, 10);
+    }, 5000);
   });
 }
 

@@ -1,6 +1,8 @@
 const path = require('path');
 const { parentPort } = require('worker_threads');
-const { getFullWidthSectionsXPaths } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths');
+const { getFullWidthSectionsXPaths } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths-generic');
+const { getFullWidthSectionsXPathsForBacom } = require('../src/puppeteer/steps/step-get-full-width-sections-xpaths-bacom');
+
 const { getFailingHtmlResources } = require('../src/puppeteer/steps/step-get-failing-html-resources-403');
 
 /*
@@ -32,9 +34,14 @@ parentPort.on('message', async (msg) => {
           }),
           franklin.Puppeteer.Steps.smartScroll(),
           franklin.Puppeteer.Steps.postLoadWait(500),
+          franklin.Puppeteer.Steps.execAsync(async (browserPage) => {
+            await browserPage.keyboard.press('Escape');
+          }),
+          franklin.Puppeteer.Steps.postLoadWait(500),
           getFullWidthSectionsXPaths({
             outputFolder: path.join(msg.options.outputFolder, 'data'),
             exclusions: msg.argv.cssExclusions,
+            analyseSections: msg.options.analyseSections,
           }),
         ],
       );

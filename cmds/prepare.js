@@ -93,6 +93,10 @@ function yargsBuilder(yargs) {
     .option('no-headless', {
       describe: 'Starts the browser in non-headless mode. Useful for debugging. Also, it forces workers to 1.',
       type: 'boolean',
+    })
+    .option('analyse-sections', {
+      describe: 'Analyse the content of the section to try to identify the type of content (text, image, video, etc.)',
+      type: 'boolean',
     });
 }
 
@@ -110,6 +114,9 @@ exports.handler = async (argv) => {
 
   // headless true unless --no-headless is passed
   const headless = argv.headless !== undefined ? argv.headless : true;
+
+  // analyse-sections false unless --analyse-sections is passed
+  const analyseSections = argv.analyseSections !== undefined ? argv.analyseSections : false;
 
   const blocksList = await getBlocksList();
 
@@ -133,5 +140,6 @@ exports.handler = async (argv) => {
   return cliWorkerHandler('prepare_sections_data_worker.js', {
     outputFolder,
     headless,
+    analyseSections,
   }, argv);
 };
