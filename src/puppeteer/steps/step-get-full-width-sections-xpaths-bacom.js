@@ -221,21 +221,21 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
 
         /* eslint-disable-next-line no-await-in-loop */
         const checkCSSExclusions = await Promise.all(cssExclusions.map(async (e) => {
-          console.log('checkCSSExclusions', e);
+          // console.log('checkCSSExclusions', e);
           /* eslint-disable-next-line no-await-in-loop */
           const b = await params.page.evaluate(
             (node, css) => window.parentHasCSSSelector(node, css),
             div,
             e,
           );
-          console.log('checkCSSExclusions', e, b);
+          // console.log('checkCSSExclusions', e, b);
           const res = b === true;
           return res;
         }));
 
         const isCSSExcluded = checkCSSExclusions.some((x) => x === true);
 
-        console.log('isCSSExcluded', isCSSExcluded);
+        // console.log('isCSSExcluded', isCSSExcluded);
 
         if (!isCSSExcluded) {
           /* eslint-disable-next-line no-await-in-loop */
@@ -267,7 +267,7 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
             const xpathHash = crypto.createHash('sha1').update(xpath).digest('hex');
             section.xpathHash = xpathHash;
 
-            console.log('bb', boundingBox);
+            // console.log('bb', boundingBox);
             if (
               boundingBox.y >= 0
               && boundingBox.width > 0
@@ -291,12 +291,12 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
                 };
               }
               sections.push(section);
-            } else {
-              section.block = {
-                type: 'to-remove',
-                comment: '[acom-section-mapping prepare] invisible section, force removing it in importer script to avoid ghost content to be added to the docx',
-              };
-              sections.push(section);
+            // } else {
+            //   section.block = {
+            //     type: 'to-remove',
+            //     comment: '[acom-section-mapping prepare] invisible section, force removing it in importer script to avoid ghost content to be added to the docx',
+            //   };
+            //   sections.push(section);
             }
           }
         }
