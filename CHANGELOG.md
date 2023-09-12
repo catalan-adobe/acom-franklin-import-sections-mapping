@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.0...v1.8.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* do not enforce to-remove section for bacom prepare step ([94835aa](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/94835aa2127d06b521b6887764c0bf4a12386b68))
+
 # [1.8.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.7.0...v1.8.0) (2023-09-12)
 
 
