@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.6.0...v1.7.0) (2023-09-12)
+
+
+### Features
+
+* when serving json data of a url with no section mapping done, return raw json file content ([d8b0393](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/d8b0393e6bb6adba0b3b69992d7d39aee8a1bf82))
+
 # [1.6.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.5.2...v1.6.0) (2023-09-12)
 
 
