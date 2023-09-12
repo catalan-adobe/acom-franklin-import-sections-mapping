@@ -35,7 +35,7 @@ async function generateAndSavePageScreenshotWithSectionsBoxes(sections, page, fi
     const section = sections[i];
     if (!section.block) {
       const svgBuffer = `<svg width="${section.width}" height="${section.height}">
-          <rect width="${section.width}" height="${section.height}" x="0" y="0" fill="none" stroke="#00F" stroke-width="8"/>
+          <rect width="${section.width-20}" height="${section.height-10}" x="10" y="5" fill="none" stroke="#00F" stroke-width="4"/>
         </svg>`;
       boxes.push({
         input: Buffer.from(svgBuffer),
@@ -329,14 +329,13 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
       // save a page screenshot with all discovered sections boxes
       await generateAndSavePageScreenshotWithSectionsBoxes(result, params.page, pUtils.join(path, `${urlHash}.${filename}`));
 
-      const screenshot = await params.page.screenshot({
-        encoding: 'binary',
-        fullPage: true,
-        type: 'jpeg',
-        quality: 10,
-      });
-
-      writeFileSync(pUtils.join(path, `${urlHash}.${filename}-screenshot.jpeg`), screenshot);
+      // const screenshot = await params.page.screenshot({
+      //   encoding: 'binary',
+      //   fullPage: true,
+      //   type: 'jpeg',
+      //   quality: 10,
+      // });
+      // writeFileSync(pUtils.join(path, `${urlHash}.${filename}-screenshot.jpeg`), screenshot);
     } catch (e) {
       params.logger.error('get full-width sections xpaths catch', e);
       params.result = {

@@ -161,7 +161,7 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
   * Init workers
   */
 
-  const numWorkers = !workerOptions.headless ? Math.min(argv.workers, 4) : argv.workers;
+  const numWorkers = Math.min(argv.workers, urls.length); // !workerOptions.headless ? Math.min(argv.workers, 4) : argv.workers;
 
   if (!workerOptions.headless) {
     terminal.bold.red(noHeadlessWarningHeader);
@@ -191,7 +191,9 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
       });
     } else {
       // If there are no more URLs, terminate the worker
-      workers[i].postMessage({ type: 'exit' });
+      if (workers[i]) {
+        workers[i].postMessage({ type: 'exit' });
+      }
     }
 
     // pace worker ramp-up
