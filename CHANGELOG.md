@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.5.2...v1.6.0) (2023-09-12)
+
+
+### Features
+
+* enforce bacom strategy for section detection ([c976dbe](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/c976dbe730b04501fe4ffbfe3506a57e6b2dcd05))
+
 ## [1.5.2](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.5.1...v1.5.2) (2023-09-09)
 
 
