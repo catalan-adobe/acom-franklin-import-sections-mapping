@@ -77,6 +77,12 @@ function yargsBuilder(yargs) {
       type: 'string',
       default: 'sections-mapping',
     })
+    .option('additional-blocks', {
+      alias: 'b',
+      describe: 'List of additional blocks folders to create (comma separated)',
+      type: 'string',
+      default: 'sections-mapping',
+    })
     .option('workers', {
       alias: 'w',
       describe: 'Number of workers to use (max. 8)',
@@ -119,6 +125,10 @@ exports.handler = async (argv) => {
   const analyseSections = argv.analyseSections !== undefined ? argv.analyseSections : false;
 
   const blocksList = await getBlocksList();
+
+  if (argv.additionalBlocks) {
+    blocksList.push(...argv.additionalBlocks.split(',').map((block) => ({ name: block, path: '' })));
+  }
 
   // create milo blocks samples html page
   const blockSampleListItems = [];
