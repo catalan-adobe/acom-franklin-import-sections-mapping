@@ -88,7 +88,8 @@ async function sectionsDataHandler(req, res) {
       }
     }
 
-    res.send(sections);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(sections.length > 0 ? sections : sectionsData);
   } catch (e) {
     res.status(500).send(e);
   }
