@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.7.0...v1.8.0) (2023-09-12)
+
+
+### Features
+
+* add cli parameter to prepare command to create extra blocks names folders ([9d86ef6](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/9d86ef67092b091a091ae7221f5c6433ff3a6c91))
+
 # [1.7.0](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.6.0...v1.7.0) (2023-09-12)
 
 
