@@ -35,7 +35,7 @@ async function generateAndSavePageScreenshotWithSectionsBoxes(sections, page, fi
     const section = sections[i];
     if (!section.block) {
       const svgBuffer = `<svg width="${section.width}" height="${section.height}">
-          <rect width="${section.width-20}" height="${section.height-10}" x="10" y="5" fill="none" stroke="#00F" stroke-width="4"/>
+          <rect width="${section.width - 20}" height="${section.height - 10}" x="10" y="5" fill="none" stroke="#00F" stroke-width="4"/>
         </svg>`;
       boxes.push({
         input: Buffer.from(svgBuffer),
@@ -294,7 +294,9 @@ function getFullWidthSectionsXPathsForBacom({ outputFolder = `${process.cwd()}/x
             // } else {
             //   section.block = {
             //     type: 'to-remove',
-            //     comment: '[acom-section-mapping prepare] invisible section, force removing it in importer script to avoid ghost content to be added to the docx',
+            //     comment: '[acom-section-mapping prepare] invisible section,
+            //          force removing it in importer script to
+            //          avoid ghost content to be added to the docx',
             //   };
             //   sections.push(section);
             }

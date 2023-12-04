@@ -7,6 +7,7 @@ const { Worker } = require('worker_threads');
 const ExcelJS = require('exceljs');
 // const { FileUtils } = require('@adobe/helix-importer');
 
+/* eslint-disable-next-line max-len */
 const noHeadlessWarningHeader = `
 ! 🚨 NO HEADLESS MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !                                                                              !
@@ -161,7 +162,7 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
   * Init workers
   */
 
-  const numWorkers = Math.min(argv.workers, urls.length); // !workerOptions.headless ? Math.min(argv.workers, 4) : argv.workers;
+  const numWorkers = Math.min(argv.workers, urls.length);
 
   if (!workerOptions.headless) {
     terminal.bold.red(noHeadlessWarningHeader);
@@ -189,11 +190,9 @@ async function cliWorkerHandler(workerScriptFilename, workerOptions, argv) {
         line: urls.length - urls.length,
         url,
       });
-    } else {
+    } else if (workers[i]) {
       // If there are no more URLs, terminate the worker
-      if (workers[i]) {
-        workers[i].postMessage({ type: 'exit' });
-      }
+      workers[i].postMessage({ type: 'exit' });
     }
 
     // pace worker ramp-up
