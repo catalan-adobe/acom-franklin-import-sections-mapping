@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.1...v1.8.2) (2023-12-04)
+
+
+### Bug Fixes
+
+* force set cors header wildcards for serve command ([4526d3a](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/4526d3a767db64e56962765fcdecb4e135a12486))
+
 ## [1.8.1](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.0...v1.8.1) (2023-09-12)
 
 

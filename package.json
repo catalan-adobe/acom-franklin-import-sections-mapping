@@ -1,6 +1,6 @@
 {
   "name": "acom-sections-mapping",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "CLI for Franklin Import of adobe.com pages using sections mapping flow",
   "bin": "index.js",
   "engines": {
