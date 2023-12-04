@@ -89,6 +89,7 @@ async function sectionsDataHandler(req, res) {
     }
 
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(sections.length > 0 ? sections : sectionsData);
   } catch (e) {
     res.status(500).send(e);
