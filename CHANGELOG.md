@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.4...v1.8.5) (2023-12-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-importer to v3 ([f54e0b8](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/f54e0b8fa816b85f78f88e0be2fb0b5041fbe4c4))
+
 ## [1.8.4](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.3...v1.8.4) (2023-12-04)
 
 
