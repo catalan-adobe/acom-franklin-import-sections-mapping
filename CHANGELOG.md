@@ -1,3 +1,10 @@
+## [1.8.17](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.16...v1.8.17) (2024-04-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @flatten-js/core to v1.5.2 ([13f81c2](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/13f81c2aa5eb53642472536549e88202b199e4b0))
+
 ## [1.8.16](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.15...v1.8.16) (2024-04-06)
 
 
