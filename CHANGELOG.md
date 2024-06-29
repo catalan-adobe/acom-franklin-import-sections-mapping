@@ -1,3 +1,10 @@
+## [1.8.23](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.22...v1.8.23) (2024-06-29)
+
+
+### Bug Fixes
+
+* **deps:** update external fixes ([c38dc8c](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/c38dc8c58b5024bb634d52761ef6ba0b1c454105))
+
 ## [1.8.22](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.21...v1.8.22) (2024-06-22)
 
 
