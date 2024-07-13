@@ -1,3 +1,10 @@
+## [1.8.25](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.24...v1.8.25) (2024-07-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v10.4.5 ([c404c2b](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/c404c2be0c1f141d8d9a88f09f06efaeb6dadc59))
+
 ## [1.8.24](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.23...v1.8.24) (2024-07-06)
 
 
