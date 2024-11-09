@@ -1,3 +1,10 @@
+## [1.8.38](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.37...v1.8.38) (2024-11-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency franklin-bulk-shared to v1.30.1 ([#63](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/issues/63)) ([424dfdd](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/424dfddab872152d9f715fc298e49313c8b868ab))
+
 ## [1.8.37](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.36...v1.8.37) (2024-10-26)
 
 
