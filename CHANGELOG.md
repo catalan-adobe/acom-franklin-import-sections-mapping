@@ -1,3 +1,10 @@
+## [1.8.42](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.41...v1.8.42) (2025-01-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency terminal-kit to v3.1.2 ([#67](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/issues/67)) ([567432f](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/567432f1c656d5500ff786ae4d6b712e23903ff7))
+
 ## [1.8.41](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.40...v1.8.41) (2024-12-07)
 
 
