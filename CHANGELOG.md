@@ -1,3 +1,10 @@
+## [1.8.47](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.46...v1.8.47) (2025-03-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency axios to v1.8.4 ([#72](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/issues/72)) ([5cba388](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/commit/5cba38869e16f65bd9cf6e99d380d3ec2cdd5531))
+
 ## [1.8.46](https://github.com/catalan-adobe/acom-franklin-import-sections-mapping/compare/v1.8.45...v1.8.46) (2025-03-15)
 
 
